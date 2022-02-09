@@ -72,6 +72,52 @@ class CoreDataManager {
     func deleteCategory(category: Category){
         container.viewContext.delete(category)
     }
+    
+    func fetchLandmarks(searchQuery: String? = nil, filter: Filter = .Name) -> [Landmark]{
+        let fetchRequest = Landmark.fetchRequest()
+        
+        let sortDescriptor : NSSortDescriptor
+        switch(filter){
+        case .Name :
+            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.title, ascending: true)
+            break
+        case .Creation :
+            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.created, ascending: true)
+            break
+        case .Modification :
+            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.modified, ascending: true)
+            break
+        }
+        
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        if let searchQuery = searchQuery, !searchQuery.isEmpty {
+            let predicate = NSPredicate(format: "%K contains[cd] %@",
+                                        argumentArray: [#keyPath(Landmark.title), searchQuery])
+            fetchRequest.predicate = predicate
+        }
+        
+        
+        do {
+            let result = try container.viewContext.fetch(fetchRequest)
+            return result
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
+    func createLandmark(title: String,description: String, category: Category){
+        let landmark = Landmark(context: container.viewContext)
+        landmark.title = title
+        landmark.created = Date()
+        landmark.modified = landmark.created
+        landmark.category = category
+        saveContext()
+    }
+    
+    func deleteLandmark(landmark: Landmark){
+        container.viewContext.delete(landmark)
+    }
 }
 
 enum Filter {

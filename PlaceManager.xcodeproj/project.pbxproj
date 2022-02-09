@@ -16,6 +16,7 @@
 		08C393B027B3CB1900E95EE8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08C393AE27B3CB1900E95EE8 /* LaunchScreen.storyboard */; };
 		08C393B927B3D1E200E95EE8 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393B827B3D1E200E95EE8 /* CategoriesViewController.swift */; };
 		08C393BC27B3D20500E95EE8 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393BB27B3D20500E95EE8 /* CoreDataManager.swift */; };
+		08C393BE27B4071E00E95EE8 /* LandsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393BD27B4071E00E95EE8 /* LandsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		08C393B127B3CB1900E95EE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08C393B827B3D1E200E95EE8 /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		08C393BB27B3D20500E95EE8 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		08C393BD27B4071E00E95EE8 /* LandsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				08C393B827B3D1E200E95EE8 /* CategoriesViewController.swift */,
+				08C393BD27B4071E00E95EE8 /* LandsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08C393BE27B4071E00E95EE8 /* LandsViewController.swift in Sources */,
 				08C393BC27B3D20500E95EE8 /* CoreDataManager.swift in Sources */,
 				08C393A527B3CB1800E95EE8 /* ViewController.swift in Sources */,
 				08C393AB27B3CB1800E95EE8 /* PlaceManager.xcdatamodeld in Sources */,

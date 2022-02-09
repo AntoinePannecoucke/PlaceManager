@@ -18,7 +18,6 @@ class CategoriesViewController : UITableViewController {
     
     //MARK: - Lifecycle
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,6 +57,17 @@ class CategoriesViewController : UITableViewController {
         currentFilter = filter
         categories = CoreDataManager.Instance.fetchCategories(filter: currentFilter)
         tableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "ShowLandsSegue"){
+            if let destination = segue.destination as! LandsViewController? {
+                let cell = sender as! UITableViewCell
+                if let indexPath = tableView.indexPath(for: cell) {
+                    destination.category = categories[indexPath.row]
+                }
+            }
+        }
     }
 
     //MARK: - User Actions
@@ -112,11 +122,6 @@ class CategoriesViewController : UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let item = categories[indexPath.row]
-        
-        //TODO: Nav
-    }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let category = categories[indexPath.row]
@@ -140,6 +145,7 @@ class CategoriesViewController : UITableViewController {
 }
 
 //MARK: - Extensions
+
 extension CategoriesViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
