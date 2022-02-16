@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		08347C0327BCF2F200DC88E4 /* CreateLandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08347C0227BCF2F200DC88E4 /* CreateLandViewController.swift */; };
+		087E895327BD3E2D00E3FE84 /* LandmarkDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087E895227BD3E2D00E3FE84 /* LandmarkDetailsViewModel.swift */; };
 		08C393A127B3CB1800E95EE8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393A027B3CB1800E95EE8 /* AppDelegate.swift */; };
 		08C393A327B3CB1800E95EE8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393A227B3CB1800E95EE8 /* SceneDelegate.swift */; };
 		08C393A527B3CB1800E95EE8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393A427B3CB1800E95EE8 /* ViewController.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		08347C0227BCF2F200DC88E4 /* CreateLandViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLandViewController.swift; sourceTree = "<group>"; };
+		087E895227BD3E2D00E3FE84 /* LandmarkDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkDetailsViewModel.swift; sourceTree = "<group>"; };
 		08C3939D27B3CB1800E95EE8 /* PlaceManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaceManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C393A027B3CB1800E95EE8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08C393A227B3CB1800E95EE8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				08C393B827B3D1E200E95EE8 /* CategoriesViewController.swift */,
 				08C393BD27B4071E00E95EE8 /* LandsViewController.swift */,
 				08347C0227BCF2F200DC88E4 /* CreateLandViewController.swift */,
+				087E895227BD3E2D00E3FE84 /* LandmarkDetailsViewModel.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 			files = (
 				08C393BE27B4071E00E95EE8 /* LandsViewController.swift in Sources */,
 				08C393BC27B3D20500E95EE8 /* CoreDataManager.swift in Sources */,
+				087E895327BD3E2D00E3FE84 /* LandmarkDetailsViewModel.swift in Sources */,
 				08C393A527B3CB1800E95EE8 /* ViewController.swift in Sources */,
 				08347C0327BCF2F200DC88E4 /* CreateLandViewController.swift in Sources */,
 				08C393AB27B3CB1800E95EE8 /* PlaceManager.xcdatamodeld in Sources */,

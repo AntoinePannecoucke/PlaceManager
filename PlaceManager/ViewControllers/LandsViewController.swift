@@ -16,6 +16,14 @@ class LandsViewController : UITableViewController {
     private let CellIdentifier = "landmarkCell"
     
     //MARK: - Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool){
+        if let category = category {
+            lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        }
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,8 +34,6 @@ class LandsViewController : UITableViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
-        
-        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter)
         
         createMenu()
         filterPullDownButton.showsMenuAsPrimaryAction = true
@@ -64,14 +70,39 @@ class LandsViewController : UITableViewController {
     
     private func menuActionClicked(filter: Filter){
         currentFilter = filter
-        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter)
+        if let category = category {
+            lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        }
         createMenu()
         tableView.reloadData()
     }
     
     //MARK: - User Interactions
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        switch  (segue.identifier) {
+        case "createLandmarkSegue":
+            if let navigationController = segue.destination as? UINavigationController {
+                if let destination = navigationController.children[0] as? CreateLandViewController {
+                    destination.category = self.category
+                }
+            }
+            break
+        case "showLandmarkDetailsSegue":
+            if let navigationController = segue.destination as? UINavigationController {
+                if let destination = navigationController.children[0] as? LandmarkDetailsViewModel {
+                    let cell = sender as! UITableViewCell
+                    if let indexPath = tableView.indexPath(for: cell) {
+                        destination.landmark = lands[indexPath.row]
+                    }
+                }
+            }
+            break
+        default:
+            return
+        }
+    }
 
     
     //MARK: - Table View
@@ -86,6 +117,9 @@ class LandsViewController : UITableViewController {
         
         cell.textLabel?.text = landmark.title
         cell.detailTextLabel?.text = landmark.desc
+        if let data = landmark.image {
+            cell.imageView?.image = UIImage(data: data)
+        }
                 
         return cell
     }
@@ -118,7 +152,9 @@ extension LandsViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchQuery = searchController.searchBar.text
-        lands = CoreDataManager.Instance.fetchLandmarks(searchQuery: searchQuery, filter: currentFilter)
+        if let category = category {
+            lands = CoreDataManager.Instance.fetchLandmarks(searchQuery: searchQuery, filter: currentFilter, category: category)
+        }
         tableView.reloadData()
     }
     

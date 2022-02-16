@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import UIKit
+import MapKit
 
 class CoreDataManager {
     
@@ -73,7 +74,7 @@ class CoreDataManager {
         container.viewContext.delete(category)
     }
     
-    func fetchLandmarks(searchQuery: String? = nil, filter: Filter = .Name) -> [Landmark]{
+    func fetchLandmarks(searchQuery: String? = nil, filter: Filter = .Name, category: Category) -> [Landmark]{
         let fetchRequest = Landmark.fetchRequest()
         
         let sortDescriptor : NSSortDescriptor
@@ -92,9 +93,14 @@ class CoreDataManager {
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         if let searchQuery = searchQuery, !searchQuery.isEmpty {
-            let predicate = NSPredicate(format: "%K contains[cd] %@",
-                                        argumentArray: [#keyPath(Landmark.title), searchQuery])
+            let predicate = NSCompoundPredicate (type: .and, subpredicates: [
+                NSPredicate(format: "%K == %@", argumentArray: [#keyPath(Landmark.category), category]),
+                NSPredicate(format: "%K contains[cd] %@", argumentArray: [#keyPath(Landmark.title), searchQuery])
+            ])
             fetchRequest.predicate = predicate
+        }
+        else {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", argumentArray: [#keyPath(Landmark.category), category])
         }
         
         
@@ -106,13 +112,24 @@ class CoreDataManager {
         }
     }
     
-    func createLandmark(title: String,description: String, category: Category){
+    func createLandmark(title: String, description: String, category: Category, image: UIImage, coordinates: CLLocationCoordinate2D){
         let landmark = Landmark(context: container.viewContext)
         landmark.title = title
+        landmark.desc = description
         landmark.created = Date()
         landmark.modified = landmark.created
+        landmark.image = image.pngData()
+        landmark.coordinates = createCoordinates(coordinates: coordinates)
         landmark.category = category
         saveContext()
+    }
+    
+    private func createCoordinates(coordinates: CLLocationCoordinate2D) -> Coordinates {
+        let coord = Coordinates(context: container.viewContext)
+        coord.latitude = coordinates.latitude
+        coord.longitude = coordinates.longitude
+        
+        return coord
     }
     
     func deleteLandmark(landmark: Landmark){
@@ -120,6 +137,8 @@ class CoreDataManager {
     }
 }
 
+
 enum Filter {
     case Name, Creation, Modification
 }
+
