@@ -41,6 +41,11 @@ class LandmarkDetailsViewModel : UIViewController {
                 ldModified.text = "Modified : \(dateFormatter.string(from: modified))"
             }
             ldDescription.text = landmark.desc
+            
+            if let coordinates = landmark.coordinates {
+                map.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude), latitudinalMeters: 10 * 1000, longitudinalMeters: 10 * 1000)
+            }
+            map.isUserInteractionEnabled = false
         }
     }
     

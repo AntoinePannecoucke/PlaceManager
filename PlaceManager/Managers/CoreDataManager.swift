@@ -72,6 +72,7 @@ class CoreDataManager {
 
     func deleteCategory(category: Category){
         container.viewContext.delete(category)
+        saveContext()
     }
     
     func fetchLandmarks(searchQuery: String? = nil, filter: Filter = .Name, category: Category) -> [Landmark]{
@@ -134,6 +135,7 @@ class CoreDataManager {
     
     func deleteLandmark(landmark: Landmark){
         container.viewContext.delete(landmark)
+        saveContext()
     }
 }
 
