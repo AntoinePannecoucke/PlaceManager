@@ -16,6 +16,7 @@ class CategoriesViewController : UITableViewController {
     @IBOutlet weak var filterPullDownButton: UIButton!
     private var currentFilter = Filter.Name
     
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -27,35 +28,43 @@ class CategoriesViewController : UITableViewController {
         
         categories = CoreDataManager.Instance.fetchCategories(filter: currentFilter)
         
-        let nameFilterAction = UIAction(title: "Name") { [weak self] it in
+        createMenu()
+        filterPullDownButton.showsMenuAsPrimaryAction = true
+    }
+    
+    private func createMenu() {
+        let nameFilterAction = UIAction(title: "Name", state: (currentFilter == .Name ? .on : .off)) { [weak self] it in
             guard let self = self else {
                 return
             }
+            
             self.menuActionClicked(filter: .Name)
         }
-            
-        let createdFilterAction = UIAction(title: "Created") { [weak self] it in
+        
+        let createdFilterAction = UIAction(title: "Created", state: (currentFilter == .Creation ? .on : .off)) { [weak self] it in
             guard let self = self else {
                 return
             }
+            
             self.menuActionClicked(filter: .Creation)
         }
-            
-        let modifiedFilterAction = UIAction(title: "Modified") { [weak self] it in
+        
+        let modifiedFilterAction = UIAction(title: "Modified", state: (currentFilter == .Modification ? .on : .off)) { [weak self] it in
             guard let self = self else {
                 return
             }
+            
             self.menuActionClicked(filter: .Modification)
         }
-            
+
         let menu = UIMenu(children: [nameFilterAction, createdFilterAction, modifiedFilterAction])
         filterPullDownButton.menu = menu
-        filterPullDownButton.showsMenuAsPrimaryAction = true
     }
     
     private func menuActionClicked(filter: Filter){
         currentFilter = filter
         categories = CoreDataManager.Instance.fetchCategories(filter: currentFilter)
+        createMenu()
         tableView.reloadData()
     }
     
