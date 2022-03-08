@@ -90,30 +90,50 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="landmarkCell" textLabel="yly-X0-O1N" detailTextLabel="Bgi-OU-Mme" style="IBUITableViewCellStyleSubtitle" id="mAn-Sc-uFO">
-                                <rect key="frame" x="20" y="32" width="374" height="50.5"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="landmarkCell" id="mAn-Sc-uFO" customClass="LandTableCellView" customModule="PlaceManager" customModuleProvider="target">
+                                <rect key="frame" x="20" y="32" width="374" height="54.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mAn-Sc-uFO" id="Ds1-gn-pLO">
-                                    <rect key="frame" x="0.0" y="0.0" width="374" height="50.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="54.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yly-X0-O1N">
-                                            <rect key="frame" x="20" y="7.5" width="30" height="17"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ETI-aP-6gx">
+                                            <rect key="frame" x="12" y="5" width="66" height="44.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="UAG-z6-fvR"/>
+                                                <constraint firstAttribute="width" constant="66" id="a4C-Zv-dWv"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hn2-gk-VlL">
+                                            <rect key="frame" x="90" y="3" width="272" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bgi-OU-Mme">
-                                            <rect key="frame" x="20" y="27" width="33" height="14.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wta-CY-KvK">
+                                            <rect key="frame" x="90" y="25" width="272" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="wta-CY-KvK" firstAttribute="leading" secondItem="ETI-aP-6gx" secondAttribute="trailing" constant="12" id="3Jc-mR-Vyx"/>
+                                        <constraint firstItem="ETI-aP-6gx" firstAttribute="top" secondItem="Ds1-gn-pLO" secondAttribute="top" constant="5" id="4E2-pe-HaO"/>
+                                        <constraint firstAttribute="trailing" secondItem="wta-CY-KvK" secondAttribute="trailing" constant="12" id="Fpd-E5-XJB"/>
+                                        <constraint firstItem="wta-CY-KvK" firstAttribute="top" secondItem="hn2-gk-VlL" secondAttribute="bottom" constant="5" id="ISO-Yc-ulp"/>
+                                        <constraint firstAttribute="bottom" secondItem="ETI-aP-6gx" secondAttribute="bottom" constant="5" id="Iyp-re-U00"/>
+                                        <constraint firstAttribute="trailing" secondItem="hn2-gk-VlL" secondAttribute="trailing" constant="12" id="KyO-e8-mJH"/>
+                                        <constraint firstItem="hn2-gk-VlL" firstAttribute="leading" secondItem="ETI-aP-6gx" secondAttribute="trailing" constant="12" id="NE5-Ew-nbi"/>
+                                        <constraint firstItem="ETI-aP-6gx" firstAttribute="leading" secondItem="Ds1-gn-pLO" secondAttribute="leading" constant="12" id="fMu-mO-nxg"/>
+                                        <constraint firstItem="ETI-aP-6gx" firstAttribute="centerY" secondItem="Ds1-gn-pLO" secondAttribute="centerY" id="gC9-UM-rxB"/>
+                                        <constraint firstItem="hn2-gk-VlL" firstAttribute="top" secondItem="Ds1-gn-pLO" secondAttribute="top" constant="3" id="yhs-fi-Tf1"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="cellDescription" destination="wta-CY-KvK" id="EGG-Dr-7EX"/>
+                                    <outlet property="cellTitle" destination="hn2-gk-VlL" id="ilU-8w-8Ad"/>
+                                    <outlet property="thumbnail" destination="ETI-aP-6gx" id="SdW-0y-DWN"/>
                                     <segue destination="b8y-w4-9B5" kind="show" identifier="showLandmarkDetailsSegue" id="HXc-LX-eJB"/>
                                 </connections>
                             </tableViewCell>
@@ -153,7 +173,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="am5-NT-pN8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1519" y="110"/>
+            <point key="canvasLocation" x="1518.840579710145" y="109.82142857142857"/>
         </scene>
         <!--Landmark Details View Model-->
         <scene sceneID="Ed8-dQ-HJ3">
@@ -463,7 +483,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="nSG-Sc-tcC"/>
+        <segue reference="uxH-Xq-9EE"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron.backward" catalog="system" width="96" height="128"/>

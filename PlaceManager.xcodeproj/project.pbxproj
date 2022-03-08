@@ -10,6 +10,7 @@
 		08347C0327BCF2F200DC88E4 /* CreateLandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08347C0227BCF2F200DC88E4 /* CreateLandViewController.swift */; };
 		087E895327BD3E2D00E3FE84 /* LandmarkDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087E895227BD3E2D00E3FE84 /* LandmarkDetailsViewModel.swift */; };
 		088610A527D75E880016D363 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088610A427D75E880016D363 /* ErrorHandler.swift */; };
+		088610A827D7A18C0016D363 /* LandTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088610A727D7A18C0016D363 /* LandTableCellView.swift */; };
 		08C393A127B3CB1800E95EE8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393A027B3CB1800E95EE8 /* AppDelegate.swift */; };
 		08C393A327B3CB1800E95EE8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393A227B3CB1800E95EE8 /* SceneDelegate.swift */; };
 		08C393A527B3CB1800E95EE8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C393A427B3CB1800E95EE8 /* ViewController.swift */; };
@@ -26,6 +27,7 @@
 		08347C0227BCF2F200DC88E4 /* CreateLandViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLandViewController.swift; sourceTree = "<group>"; };
 		087E895227BD3E2D00E3FE84 /* LandmarkDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkDetailsViewModel.swift; sourceTree = "<group>"; };
 		088610A427D75E880016D363 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		088610A727D7A18C0016D363 /* LandTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandTableCellView.swift; sourceTree = "<group>"; };
 		08C3939D27B3CB1800E95EE8 /* PlaceManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaceManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C393A027B3CB1800E95EE8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08C393A227B3CB1800E95EE8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,14 @@
 			path = Handler;
 			sourceTree = "<group>";
 		};
+		088610A627D7A15D0016D363 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				088610A727D7A18C0016D363 /* LandTableCellView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		08C3939427B3CB1800E95EE8 = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +88,7 @@
 		08C3939F27B3CB1800E95EE8 /* PlaceManager */ = {
 			isa = PBXGroup;
 			children = (
+				088610A627D7A15D0016D363 /* View */,
 				088610A327D75E750016D363 /* Handler */,
 				08C393BA27B3D1E700E95EE8 /* Managers */,
 				08C393B727B3D1B300E95EE8 /* ViewControllers */,
@@ -189,6 +200,7 @@
 				08C393A527B3CB1800E95EE8 /* ViewController.swift in Sources */,
 				08347C0327BCF2F200DC88E4 /* CreateLandViewController.swift in Sources */,
 				08C393AB27B3CB1800E95EE8 /* PlaceManager.xcdatamodeld in Sources */,
+				088610A827D7A18C0016D363 /* LandTableCellView.swift in Sources */,
 				08C393A127B3CB1800E95EE8 /* AppDelegate.swift in Sources */,
 				088610A527D75E880016D363 /* ErrorHandler.swift in Sources */,
 				08C393A327B3CB1800E95EE8 /* SceneDelegate.swift in Sources */,

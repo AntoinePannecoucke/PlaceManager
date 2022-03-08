@@ -162,19 +162,20 @@ class LandsViewController : UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier, for: indexPath) as? LandTableCellView
+        guard let cell = cell else { return tableView.dequeueReusableCell(withIdentifier: CellIdentifier, for: indexPath) }
         let landmark = lands[indexPath.row]
         
-        cell.textLabel?.text = landmark.title
-        cell.detailTextLabel?.text = landmark.desc
+        cell.cellTitle.text = landmark.title
+        cell.cellDescription.text  = landmark.desc
+        
         guard let data = landmark.image else {
             ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound)
             return cell
         }
-    
         
         DispatchQueue.main.async {
-            cell.imageView?.image = UIImage(data: data)
+            cell.thumbnail.image = UIImage(data: data)
             cell.setNeedsLayout()
         }
                 
