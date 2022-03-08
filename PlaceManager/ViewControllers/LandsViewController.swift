@@ -17,19 +17,18 @@ class LandsViewController : UITableViewController {
     
     //MARK: - Lifecycle
     
-    override func viewWillAppear(_ animated: Bool){
-        if let category = category {
-            lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
-        }
-        tableView.reloadData()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let category = category {
-            self.title = category.name
+        guard let category = category else {
+            ErrorHandler.Instance.handle(sender: self, error: .noCategoryFound)
+            return
         }
+        
+        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        
+        self.title = category.name
+        
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -70,9 +69,14 @@ class LandsViewController : UITableViewController {
     
     private func menuActionClicked(filter: Filter){
         currentFilter = filter
-        if let category = category {
-            lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        
+        guard let category = category else {
+            ErrorHandler.Instance.handle(sender: self, error: .noCategoryFound)
+            return
         }
+        
+        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        
         createMenu()
         tableView.reloadData()
     }
@@ -83,23 +87,39 @@ class LandsViewController : UITableViewController {
         
         switch  (segue.identifier) {
         case "createLandmarkSegue":
-            if let navigationController = segue.destination as? UINavigationController {
-                if let destination = navigationController.children[0] as? CreateLandViewController {
-                    destination.category = self.category
-                    destination.landsDelegate = self
-                }
+            
+            guard let navigationController = segue.destination as? UINavigationController,
+                  let destination = navigationController.children[0] as? CreateLandViewController
+            else {
+                ErrorHandler.Instance.handle(sender: self, error: .navigationError)
+                return
             }
-            break
+            
+            destination.category = self.category
+            destination.landsDelegate = self
+            
+            if sender != nil {
+                destination.landToModify = sender as? Landmark
+            }
+            
         case "showLandmarkDetailsSegue":
-            if let navigationController = segue.destination as? UINavigationController {
-                if let destination = navigationController.children[0] as? LandmarkDetailsViewModel {
-                    let cell = sender as! UITableViewCell
-                    if let indexPath = tableView.indexPath(for: cell) {
-                        destination.landmark = lands[indexPath.row]
-                    }
-                }
+            
+            guard let navigationController = segue.destination as? UINavigationController,
+                  let destination = navigationController.children[0] as? LandmarkDetailsViewModel
+            else {
+                ErrorHandler.Instance.handle(sender: self, error: .navigationError)
+                return
             }
-            break
+            
+            let cell = sender as! UITableViewCell
+            
+            guard let indexPath = tableView.indexPath(for: cell) else {
+                ErrorHandler.Instance.handle(sender: self, error: .indexPathNotExists)
+                return
+            }
+            
+            destination.landmark = lands[indexPath.row]
+
         default:
             return
         }
@@ -118,13 +138,17 @@ class LandsViewController : UITableViewController {
         
         cell.textLabel?.text = landmark.title
         cell.detailTextLabel?.text = landmark.desc
-        if let data = landmark.image {
+        guard let data = landmark.image else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound)
+            return cell
+        }
+        DispatchQueue.main.async {
             cell.imageView?.image = UIImage(data: data)
+            cell.setNeedsLayout()
         }
                 
         return cell
     }
-    
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let landmark = lands[indexPath.row]
@@ -145,6 +169,22 @@ class LandsViewController : UITableViewController {
         return swipeActionConfiguration
     }
     
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let landmark = lands[indexPath.row]
+        
+        let modifyAction = UIContextualAction(style: .normal, title: "Modifier") { [weak self]_, _, completion in
+            guard let self = self else {
+                return
+            }
+            self.performSegue(withIdentifier: "createLandmarkSegue", sender: landmark)
+            
+        }
+        
+        let swipeActionConfiguration = UISwipeActionsConfiguration(actions: [modifyAction])
+        
+        return swipeActionConfiguration
+    }
+    
 }
 
 //MARK: - Extensions
@@ -153,9 +193,14 @@ extension LandsViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchQuery = searchController.searchBar.text
-        if let category = category {
-            lands = CoreDataManager.Instance.fetchLandmarks(searchQuery: searchQuery, filter: currentFilter, category: category)
+        
+        guard let category = category else {
+            ErrorHandler.Instance.handle(sender: self, error: .noCategoryFound)
+            return
         }
+        
+        lands = CoreDataManager.Instance.fetchLandmarks(searchQuery: searchQuery, filter: currentFilter, category: category)
+        
         tableView.reloadData()
     }
     
@@ -164,15 +209,28 @@ extension LandsViewController : UISearchResultsUpdating {
 extension LandsViewController : LandsDelegate {
     
     func updateLand(_ controller: CreateLandViewController, landmark: Landmark) {
-        //DO NOTHING
+        guard let category = category else {
+            ErrorHandler.Instance.handle(sender: self, error: .noCategoryFound)
+            return
+        }
+        
+        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        tableView.reloadData()
+        
+        controller.dismiss(animated: true)
     }
     
     
     func addLand(_ controller: CreateLandViewController) {
-        if let category = category {
-            lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
-            tableView.reloadData()
+        
+        guard let category = category else {
+            ErrorHandler.Instance.handle(sender: self, error: .noCategoryFound)
+            return
         }
+        
+        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        tableView.reloadData()
+        
         controller.dismiss(animated: true)
     }
         

@@ -160,6 +160,13 @@ class CoreDataManager {
         coord.setValue(coordinates.latitude, forKey: #keyPath(Coordinates.latitude))
         coord.setValue(coordinates.longitude, forKey: #keyPath(Coordinates.longitude))
     }
+    
+    func updateCategory(category: Category, name: String){
+        category.setValue(name, forKey: #keyPath(Category.name))
+        category.setValue(Date(), forKey: #keyPath(Category.modified))
+        
+        saveContext()
+    }
 }
 
 

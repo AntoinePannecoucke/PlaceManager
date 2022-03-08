@@ -70,12 +70,17 @@ class CategoriesViewController : UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "ShowLandsSegue"){
-            if let destination = segue.destination as! LandsViewController? {
-                let cell = sender as! UITableViewCell
-                if let indexPath = tableView.indexPath(for: cell) {
-                    destination.category = categories[indexPath.row]
-                }
+            guard let destination = segue.destination as! LandsViewController? else{
+                ErrorHandler.Instance.handle(sender: self, error: .navigationError)
+                return
             }
+            let cell = sender as! UITableViewCell
+            guard let indexPath = tableView.indexPath(for: cell) else{
+                ErrorHandler.Instance.handle(sender: self, error: .indexPathNotExists)
+                return
+            }
+            destination.category = categories[indexPath.row]
+            
         }
     }
 
@@ -100,7 +105,10 @@ class CategoriesViewController : UITableViewController {
                 return
             }
             
-            guard let categoryName = textField.text else { return }
+            guard let categoryName = textField.text else {
+                ErrorHandler.Instance.handle(sender: self, error: .fieldDidNotExists)
+                return
+            }
             if !categoryName.isEmpty {
                 CoreDataManager.Instance.createCategory(name: categoryName)
                 self.categories = CoreDataManager.Instance.fetchCategories(filter: self.currentFilter)
@@ -150,6 +158,54 @@ class CategoriesViewController : UITableViewController {
         return swipeActionConfiguration
     }
     
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let category = categories[indexPath.row]
+        
+        let modifyAction = UIContextualAction(style: .normal, title: "Modifier") { [weak self]_, _, completion in
+            guard let self = self else {
+                return
+            }
+            let alertController = UIAlertController(title: "Create", message: "Create new Category", preferredStyle: .alert)
+            
+            alertController.addTextField { textField in
+                textField.placeholder = "Titre…"
+                textField.text = category.name
+            }
+            
+            let cancelAction = UIAlertAction(title: "Annuler",
+                                             style: .cancel,
+                                             handler: nil)
+            
+            let saveAction = UIAlertAction(title: "Sauvegarder",
+                                           style: .default) { [weak self]_ in
+               
+                guard let self = self ,
+                      let textField = alertController.textFields?.first else {
+                    return
+                }
+                
+                guard let categoryName = textField.text else {
+                    ErrorHandler.Instance.handle(sender: self, error: .fieldDidNotExists)
+                    return
+                }
+                if !categoryName.isEmpty {
+                    CoreDataManager.Instance.updateCategory(category: category, name: categoryName)
+                    self.categories = CoreDataManager.Instance.fetchCategories(filter: self.currentFilter)
+                    self.tableView.reloadData()
+                }
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(saveAction)
+            
+            self.present(alertController, animated: true)
+            
+        }
+        
+        let swipeActionConfiguration = UISwipeActionsConfiguration(actions: [modifyAction])
+        
+        return swipeActionConfiguration
+    }
 }
 
 //MARK: - Extensions

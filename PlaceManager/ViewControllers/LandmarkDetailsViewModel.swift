@@ -20,15 +20,30 @@ class LandmarkDetailsViewModel : UIViewController {
     var landmark : Landmark? = nil
     
     override func viewDidLoad() {
-        guard let landmark = landmark else { print("No landmark"); return}
+        guard let landmark = landmark else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkFound)
+            return
+        }
         initView(landmark: landmark)
     }
     
     private func initView(landmark : Landmark){
-        guard let data = landmark.image else { print("No image"); return}
-        guard let created = landmark.created else { print("No created date"); return}
-        guard let modified = landmark.modified else { print("No modified image"); return}
-        guard let coordinates = landmark.coordinates else { print("No coordinates"); return}
+        guard let data = landmark.image else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound)
+            return
+        }
+        guard let created = landmark.created else {
+            ErrorHandler.Instance.handle(sender: self, error: .noCategoryFound)
+            return
+        }
+        guard let modified = landmark.modified else {
+            ErrorHandler.Instance.handle(sender: self, error: .noCategoryFound)
+            return
+        }
+        guard let coordinates = landmark.coordinates else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkCoordinatesFound)
+            return
+        }
         
         self.title = landmark.title
         DispatchQueue.main.async {
@@ -64,6 +79,7 @@ class LandmarkDetailsViewModel : UIViewController {
             guard let navigationController = segue.destination as? UINavigationController,
                   let destination = navigationController.children[0] as? CreateLandViewController
             else {
+                ErrorHandler.Instance.handle(sender: self, error: .navigationError)
                 return
             }
             destination.landToModify = self.landmark
@@ -83,7 +99,10 @@ extension LandmarkDetailsViewModel : LandsDelegate {
     func updateLand(_ controller: CreateLandViewController, landmark: Landmark) {
         self.landmark = landmark
         
-        guard let landmark = self.landmark else { print("No landmark"); return}
+        guard let landmark = self.landmark else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkFound)
+            return
+        }
         initView(landmark: landmark)
         
         controller.dismiss(animated: true)

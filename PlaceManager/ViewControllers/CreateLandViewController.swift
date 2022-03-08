@@ -15,9 +15,8 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
         picker.dismiss(animated: true)
         
         let itemProvider = results.first?.itemProvider
-        guard let itemProvider = itemProvider else { print("No provider found !"); return}
         
-        if itemProvider.canLoadObject(ofClass: UIImage.self) {
+        if let itemProvider = itemProvider , itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                 guard let self = self else {return}
                 guard let image = image as? UIImage else{return}
@@ -47,8 +46,14 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
     override func viewDidLoad() {
         
         if let landToModify = landToModify {
-            guard let image = landToModify.image else {return}
-            guard let coordinates = landToModify.coordinates else {return}
+            guard let image = landToModify.image else {
+                ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound)
+                return
+            }
+            guard let coordinates = landToModify.coordinates else {
+                ErrorHandler.Instance.handle(sender: self, error: .noLandmarkCoordinatesFound)
+                return
+            }
             
             landmarkTitle.text = landToModify.title
             desc.text = landToModify.desc
@@ -69,12 +74,30 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
     }
     
     @IBAction func save() {
-        guard let category = category else { print("No category !"); return}
-        guard let ldTitle = landmarkTitle.text else { print("No title !"); return}
-        guard let ldDesc = desc.text else { print("No description !"); return}
-        guard let image = imageView.image else { print("No image !"); return}
-        guard let coordinates = coordinates else { print("No coordinates !"); return}
-        guard let delegate = landsDelegate else { print("No delegate !"); return}
+        guard let category = category else {
+            ErrorHandler.Instance.handle(sender: self, error: .noCategoryFound)
+            return
+        }
+        guard let ldTitle = landmarkTitle.text else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkTitleFound)
+            return
+        }
+        guard let ldDesc = desc.text else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkDescriptionFound)
+            return
+        }
+        guard let image = imageView.image else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound)
+            return
+        }
+        guard let coordinates = coordinates else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkCoordinatesFound)
+            return
+        }
+        guard let delegate = landsDelegate else {
+            ErrorHandler.Instance.handle(sender: self, error: .noDelegateFound)
+            return
+        }
         
         if (landmarkTitle.hasText && desc.hasText && imageView.image != nil ){
             
