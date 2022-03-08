@@ -15,6 +15,7 @@ class CategoriesViewController : UITableViewController {
     private var categories : [Category] = []
     @IBOutlet weak var filterPullDownButton: UIButton!
     private var currentFilter = Filter.Name
+    private var currentOrder = Order.asc
     
     
     //MARK: - Lifecycle
@@ -26,7 +27,7 @@ class CategoriesViewController : UITableViewController {
         searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
         
-        categories = CoreDataManager.Instance.fetchCategories(filter: currentFilter)
+        categories = CoreDataManager.Instance.fetchCategories(filter: currentFilter, order: currentOrder)
         
         createMenu()
         filterPullDownButton.showsMenuAsPrimaryAction = true
@@ -41,7 +42,9 @@ class CategoriesViewController : UITableViewController {
             self.menuActionClicked(filter: .Name)
         }
         
-        let createdFilterAction = UIAction(title: "Created", state: (currentFilter == .Creation ? .on : .off)) { [weak self] it in
+        let createdFilterAction = UIAction(title: "Created",
+                                           image: getImage(filter: .Creation),
+                                           state: (currentFilter == .Creation ? .on : .off)) { [weak self] it in
             guard let self = self else {
                 return
             }
@@ -49,7 +52,9 @@ class CategoriesViewController : UITableViewController {
             self.menuActionClicked(filter: .Creation)
         }
         
-        let modifiedFilterAction = UIAction(title: "Modified", state: (currentFilter == .Modification ? .on : .off)) { [weak self] it in
+        let modifiedFilterAction = UIAction(title: "Modified",
+                                            image: getImage(filter: .Modification),
+                                            state: (currentFilter == .Modification ? .on : .off)) { [weak self] it in
             guard let self = self else {
                 return
             }
@@ -61,9 +66,33 @@ class CategoriesViewController : UITableViewController {
         filterPullDownButton.menu = menu
     }
     
+    private func getImage(filter: Filter) -> UIImage? {
+        if (filter == currentFilter){
+            switch currentOrder {
+            case .asc:
+                return UIImage.init(systemName: "chevron.up")
+            case .desc:
+                return UIImage.init(systemName: "chevron.down")
+            }
+        }
+        return nil
+    }
+    
     private func menuActionClicked(filter: Filter){
+        if (filter != currentFilter){
+            currentOrder = .asc
+        }
+        else {
+            switch currentOrder {
+            case .asc:
+                currentOrder = .desc
+            case .desc:
+                currentOrder = .asc
+            }
+        }
         currentFilter = filter
-        categories = CoreDataManager.Instance.fetchCategories(filter: currentFilter)
+        
+        categories = CoreDataManager.Instance.fetchCategories(filter: currentFilter, order: currentOrder)
         createMenu()
         tableView.reloadData()
     }
@@ -111,7 +140,7 @@ class CategoriesViewController : UITableViewController {
             }
             if !categoryName.isEmpty {
                 CoreDataManager.Instance.createCategory(name: categoryName)
-                self.categories = CoreDataManager.Instance.fetchCategories(filter: self.currentFilter)
+                self.categories = CoreDataManager.Instance.fetchCategories(filter: self.currentFilter, order: self.currentOrder)
                 self.tableView.reloadData()
             }
         }
@@ -190,7 +219,7 @@ class CategoriesViewController : UITableViewController {
                 }
                 if !categoryName.isEmpty {
                     CoreDataManager.Instance.updateCategory(category: category, name: categoryName)
-                    self.categories = CoreDataManager.Instance.fetchCategories(filter: self.currentFilter)
+                    self.categories = CoreDataManager.Instance.fetchCategories(filter: self.currentFilter, order: self.currentOrder)
                     self.tableView.reloadData()
                 }
             }
@@ -214,7 +243,7 @@ extension CategoriesViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchQuery = searchController.searchBar.text
-        categories = CoreDataManager.Instance.fetchCategories(searchQuery: searchQuery, filter: currentFilter)
+        categories = CoreDataManager.Instance.fetchCategories(searchQuery: searchQuery, filter: currentFilter, order: currentOrder)
         tableView.reloadData()
     }
     

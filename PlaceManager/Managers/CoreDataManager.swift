@@ -29,17 +29,17 @@ class CoreDataManager {
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
     }
     
-    func fetchCategories(searchQuery: String? = nil, filter: Filter = .Name) -> [Category]{
+    func fetchCategories(searchQuery: String? = nil, filter: Filter = .Name, order: Order) -> [Category]{
         let fetchRequest = Category.fetchRequest()
         
         let sortDescriptor : NSSortDescriptor
         switch(filter){
         case .Name :
-            sortDescriptor = NSSortDescriptor(keyPath: \Category.name, ascending: true)
+            sortDescriptor = NSSortDescriptor(keyPath: \Category.name, ascending: order == Order.asc)
         case .Creation :
-            sortDescriptor = NSSortDescriptor(keyPath: \Category.created, ascending: true)
+            sortDescriptor = NSSortDescriptor(keyPath: \Category.created, ascending: order == Order.asc)
         case .Modification :
-            sortDescriptor = NSSortDescriptor(keyPath: \Category.modified, ascending: true)
+            sortDescriptor = NSSortDescriptor(keyPath: \Category.modified, ascending: order == Order.asc)
         }
         
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -71,17 +71,17 @@ class CoreDataManager {
         saveContext()
     }
     
-    func fetchLandmarks(searchQuery: String? = nil, filter: Filter = .Name, category: Category) -> [Landmark]{
+    func fetchLandmarks(searchQuery: String? = nil, filter: Filter = .Name, category: Category, order: Order) -> [Landmark]{
         let fetchRequest = Landmark.fetchRequest()
         
         let sortDescriptor : NSSortDescriptor
         switch(filter){
         case .Name :
-            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.title, ascending: true)
+            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.title, ascending: order == Order.asc)
         case .Creation :
-            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.created, ascending: true)
+            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.created, ascending: order == Order.asc)
         case .Modification :
-            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.modified, ascending: true)
+            sortDescriptor = NSSortDescriptor(keyPath: \Landmark.modified, ascending: order == Order.asc)
         }
         
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -172,5 +172,10 @@ class CoreDataManager {
 
 enum Filter {
     case Name, Creation, Modification
+}
+
+enum Order {
+    case asc
+    case desc
 }
 

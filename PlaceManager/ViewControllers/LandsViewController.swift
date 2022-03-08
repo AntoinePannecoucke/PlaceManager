@@ -12,6 +12,7 @@ class LandsViewController : UITableViewController {
     @IBOutlet weak var filterPullDownButton: UIButton!
     var category : Category? = nil
     private var currentFilter = Filter.Name
+    private var currentOrder = Order.asc
     private var lands : [Landmark] = []
     private let CellIdentifier = "landmarkCell"
     
@@ -25,7 +26,7 @@ class LandsViewController : UITableViewController {
             return
         }
         
-        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category, order: currentOrder)
         
         self.title = category.name
         
@@ -47,7 +48,9 @@ class LandsViewController : UITableViewController {
             self.menuActionClicked(filter: .Name)
         }
         
-        let createdFilterAction = UIAction(title: "Created", state: (currentFilter == .Creation ? .on : .off)) { [weak self] it in
+        let createdFilterAction = UIAction(title: "Created",
+                                           image: getImage(filter: .Creation),
+                                           state: (currentFilter == .Creation ? .on : .off)) { [weak self] it in
             guard let self = self else {
                 return
             }
@@ -55,7 +58,9 @@ class LandsViewController : UITableViewController {
             self.menuActionClicked(filter: .Creation)
         }
         
-        let modifiedFilterAction = UIAction(title: "Modified", state: (currentFilter == .Modification ? .on : .off)) { [weak self] it in
+        let modifiedFilterAction = UIAction(title: "Modified",
+                                            image: getImage(filter: .Modification),
+                                            state: (currentFilter == .Modification ? .on : .off)) { [weak self] it in
             guard let self = self else {
                 return
             }
@@ -67,7 +72,31 @@ class LandsViewController : UITableViewController {
         filterPullDownButton.menu = menu
     }
     
+    private func getImage(filter: Filter) -> UIImage? {
+        if (filter == currentFilter){
+            switch currentOrder {
+            case .asc:
+                return UIImage.init(systemName: "chevron.up")
+            case .desc:
+                return UIImage.init(systemName: "chevron.down")
+            }
+        }
+        return nil
+    }
+    
     private func menuActionClicked(filter: Filter){
+        if (filter != currentFilter){
+            currentOrder = .asc
+        }
+        else {
+            switch currentOrder {
+            case .asc:
+                currentOrder = .desc
+            case .desc:
+                currentOrder = .asc
+            }
+        }
+        
         currentFilter = filter
         
         guard let category = category else {
@@ -75,7 +104,7 @@ class LandsViewController : UITableViewController {
             return
         }
         
-        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category, order: currentOrder)
         
         createMenu()
         tableView.reloadData()
@@ -142,6 +171,8 @@ class LandsViewController : UITableViewController {
             ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound)
             return cell
         }
+    
+        
         DispatchQueue.main.async {
             cell.imageView?.image = UIImage(data: data)
             cell.setNeedsLayout()
@@ -199,7 +230,7 @@ extension LandsViewController : UISearchResultsUpdating {
             return
         }
         
-        lands = CoreDataManager.Instance.fetchLandmarks(searchQuery: searchQuery, filter: currentFilter, category: category)
+        lands = CoreDataManager.Instance.fetchLandmarks(searchQuery: searchQuery, filter: currentFilter, category: category, order: currentOrder)
         
         tableView.reloadData()
     }
@@ -214,7 +245,7 @@ extension LandsViewController : LandsDelegate {
             return
         }
         
-        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category, order: currentOrder)
         tableView.reloadData()
         
         controller.dismiss(animated: true)
@@ -228,7 +259,7 @@ extension LandsViewController : LandsDelegate {
             return
         }
         
-        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+        lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category, order: currentOrder)
         tableView.reloadData()
         
         controller.dismiss(animated: true)

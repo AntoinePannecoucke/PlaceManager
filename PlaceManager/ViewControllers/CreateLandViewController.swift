@@ -79,19 +79,19 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
             return
         }
         guard let ldTitle = landmarkTitle.text else {
-            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkTitleFound)
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkTitleFound, doDismiss: false)
             return
         }
         guard let ldDesc = desc.text else {
-            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkDescriptionFound)
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkDescriptionFound, doDismiss: false)
             return
         }
         guard let image = imageView.image else {
-            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound)
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound, doDismiss: false)
             return
         }
         guard let coordinates = coordinates else {
-            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkCoordinatesFound)
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkCoordinatesFound, doDismiss: false)
             return
         }
         guard let delegate = landsDelegate else {
@@ -99,20 +99,33 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
             return
         }
         
-        if (landmarkTitle.hasText && desc.hasText && imageView.image != nil ){
+        if (landmarkTitle.hasText ){
             
-            if let landToModify = landToModify {
-                
-                CoreDataManager.Instance.updateLandmark(landmark: landToModify, title: ldTitle, desc: ldDesc, image: image, coordinates: coordinates)
-                delegate.updateLand(self, landmark: landToModify)
-                
+            if (desc.hasText) {
+                if (imageView.image != nil) {
+                    if let landToModify = landToModify {
+                        
+                        CoreDataManager.Instance.updateLandmark(landmark: landToModify, title: ldTitle, desc: ldDesc, image: image, coordinates: coordinates)
+                        delegate.updateLand(self, landmark: landToModify)
+                        
+                    }
+                    else {
+                        
+                        CoreDataManager.Instance.createLandmark(title: ldTitle, description: ldDesc, category: category, image: image, coordinates: coordinates)
+                        delegate.addLand(self)
+                        
+                    }
+                }
+                else {
+                    ErrorHandler.Instance.handle(sender: self, error: .noLandmarkImageFound, doDismiss: false)
+                }
             }
-            else {
-                
-                CoreDataManager.Instance.createLandmark(title: ldTitle, description: ldDesc, category: category, image: image, coordinates: coordinates)
-                delegate.addLand(self)
-                
+            else{
+                ErrorHandler.Instance.handle(sender: self, error: .noLandmarkDescriptionFound, doDismiss: false)
             }
+        }
+        else {
+            ErrorHandler.Instance.handle(sender: self, error: .noLandmarkTitleFound, doDismiss: false)
         }
     }
     
