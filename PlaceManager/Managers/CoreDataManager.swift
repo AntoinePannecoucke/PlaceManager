@@ -36,13 +36,10 @@ class CoreDataManager {
         switch(filter){
         case .Name :
             sortDescriptor = NSSortDescriptor(keyPath: \Category.name, ascending: true)
-            break
         case .Creation :
             sortDescriptor = NSSortDescriptor(keyPath: \Category.created, ascending: true)
-            break
         case .Modification :
             sortDescriptor = NSSortDescriptor(keyPath: \Category.modified, ascending: true)
-            break
         }
         
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -52,8 +49,7 @@ class CoreDataManager {
                                         argumentArray: [#keyPath(Category.name), searchQuery])
             fetchRequest.predicate = predicate
         }
-        
-        
+
         do {
             let result = try container.viewContext.fetch(fetchRequest)
             return result
@@ -82,13 +78,10 @@ class CoreDataManager {
         switch(filter){
         case .Name :
             sortDescriptor = NSSortDescriptor(keyPath: \Landmark.title, ascending: true)
-            break
         case .Creation :
             sortDescriptor = NSSortDescriptor(keyPath: \Landmark.created, ascending: true)
-            break
         case .Modification :
             sortDescriptor = NSSortDescriptor(keyPath: \Landmark.modified, ascending: true)
-            break
         }
         
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -136,6 +129,36 @@ class CoreDataManager {
     func deleteLandmark(landmark: Landmark){
         container.viewContext.delete(landmark)
         saveContext()
+    }
+    
+    func updateLandmark(landmark: Landmark, title : String?, desc : String?, image: UIImage?, coordinates: CLLocationCoordinate2D?){
+        if let title = title {
+            landmark.setValue(title, forKey: #keyPath(Landmark.title))
+        }
+        if let desc = desc {
+            landmark.setValue(desc, forKey: #keyPath(Landmark.desc))
+        }
+        if let image = image {
+            landmark.setValue(image.pngData(), forKey: #keyPath(Landmark.image))
+        }
+        
+        landmark.setValue(Date(), forKey: #keyPath(Landmark.modified))
+        
+        if let coordinates = coordinates {
+            if let landmarkCoordinates = landmark.coordinates {
+                updateCoordinates(coord: landmarkCoordinates, coordinates: coordinates)
+            }
+            else {
+                landmark.coordinates = createCoordinates(coordinates: coordinates)
+            }
+        }
+        
+        saveContext()
+    }
+    
+    func updateCoordinates(coord : Coordinates, coordinates: CLLocationCoordinate2D){
+        coord.setValue(coordinates.latitude, forKey: #keyPath(Coordinates.latitude))
+        coord.setValue(coordinates.longitude, forKey: #keyPath(Coordinates.longitude))
     }
 }
 

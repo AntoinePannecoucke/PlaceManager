@@ -20,36 +20,73 @@ class LandmarkDetailsViewModel : UIViewController {
     var landmark : Landmark? = nil
     
     override func viewDidLoad() {
-        if let landmark = landmark {
-            self.title = landmark.title
-            if let data = landmark.image {
-                image.image = UIImage(data: data)
-            }
-            image.layer.cornerRadius = 75.0
-            image.layer.borderWidth = 2
-            image.layer.borderColor = CGColor(red: 0, green: 0, blue: 0, alpha: 255)
-            ldTitle.text = landmark.title
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .long
-            dateFormatter.timeStyle = .none
-            
-            if let created = landmark.created {
-                ldCreated.text = "Created : \(dateFormatter.string(from: created))"
-            }
-            if let modified = landmark.modified {
-                ldModified.text = "Modified : \(dateFormatter.string(from: modified))"
-            }
-            ldDescription.text = landmark.desc
-            
-            if let coordinates = landmark.coordinates {
-                map.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude), latitudinalMeters: 10 * 1000, longitudinalMeters: 10 * 1000)
-            }
-            map.isUserInteractionEnabled = false
-        }
+        guard let landmark = landmark else { print("No landmark"); return}
+        initView(landmark: landmark)
     }
+    
+    private func initView(landmark : Landmark){
+        guard let data = landmark.image else { print("No image"); return}
+        guard let created = landmark.created else { print("No created date"); return}
+        guard let modified = landmark.modified else { print("No modified image"); return}
+        guard let coordinates = landmark.coordinates else { print("No coordinates"); return}
+        
+        self.title = landmark.title
+        DispatchQueue.main.async {
+            self.image.image = UIImage(data: data)
+        }
+        image.layer.cornerRadius = 75.0
+        image.layer.borderWidth = 2
+        image.layer.borderColor = CGColor(red: 0, green: 0, blue: 0, alpha: 255)
+        ldTitle.text = landmark.title
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .none
+        
+        ldCreated.text = "Created : \(dateFormatter.string(from: created))"
+        ldModified.text = "Modified : \(dateFormatter.string(from: modified))"
+        
+        ldDescription.text = landmark.desc
+        
+        map.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude), latitudinalMeters: 10 * 1000, longitudinalMeters: 10 * 1000)
+        map.isUserInteractionEnabled = false
+    }
+    
+    
     
     @IBAction func back(_ sender: Any) {
         dismiss(animated: true)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch (segue.identifier){
+        case "modifyLandmarkSegue":
+            guard let navigationController = segue.destination as? UINavigationController,
+                  let destination = navigationController.children[0] as? CreateLandViewController
+            else {
+                return
+            }
+            destination.landToModify = self.landmark
+            destination.landsDelegate = self
+            
+        default:
+            return
+        }
+    }
+}
+
+extension LandmarkDetailsViewModel : LandsDelegate {
+    func addLand(_ controller: CreateLandViewController) {
+        //DO NOTHING
+    }
+    
+    func updateLand(_ controller: CreateLandViewController, landmark: Landmark) {
+        self.landmark = landmark
+        
+        guard let landmark = self.landmark else { print("No landmark"); return}
+        initView(landmark: landmark)
+        
+        controller.dismiss(animated: true)
+    }
+    
 }

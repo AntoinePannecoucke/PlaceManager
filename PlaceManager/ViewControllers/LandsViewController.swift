@@ -86,6 +86,7 @@ class LandsViewController : UITableViewController {
             if let navigationController = segue.destination as? UINavigationController {
                 if let destination = navigationController.children[0] as? CreateLandViewController {
                     destination.category = self.category
+                    destination.landsDelegate = self
                 }
             }
             break
@@ -158,4 +159,21 @@ extension LandsViewController : UISearchResultsUpdating {
         tableView.reloadData()
     }
     
+}
+
+extension LandsViewController : LandsDelegate {
+    
+    func updateLand(_ controller: CreateLandViewController, landmark: Landmark) {
+        //DO NOTHING
+    }
+    
+    
+    func addLand(_ controller: CreateLandViewController) {
+        if let category = category {
+            lands = CoreDataManager.Instance.fetchLandmarks(filter: currentFilter, category: category)
+            tableView.reloadData()
+        }
+        controller.dismiss(animated: true)
+    }
+        
 }

@@ -100,7 +100,8 @@ class CategoriesViewController : UITableViewController {
                 return
             }
             
-            if let categoryName = textField.text, !categoryName.isEmpty {
+            guard let categoryName = textField.text else { return }
+            if !categoryName.isEmpty {
                 CoreDataManager.Instance.createCategory(name: categoryName)
                 self.categories = CoreDataManager.Instance.fetchCategories(filter: self.currentFilter)
                 self.tableView.reloadData()
@@ -136,9 +137,7 @@ class CategoriesViewController : UITableViewController {
         let category = categories[indexPath.row]
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Supprimer") { [weak self]_, _, completion in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             
             CoreDataManager.Instance.deleteCategory(category: category)
             self.categories.remove(at: indexPath.row)

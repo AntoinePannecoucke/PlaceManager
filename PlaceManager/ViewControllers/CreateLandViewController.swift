@@ -15,14 +15,14 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
         picker.dismiss(animated: true)
         
         let itemProvider = results.first?.itemProvider
+        guard let itemProvider = itemProvider else { print("No provider found !"); return}
         
-        if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
+        if itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                 guard let self = self else {return}
-                if let image = image as? UIImage{
-                    DispatchQueue.main.async {
-                        self.imageView.image = image
-                    }
+                guard let image = image as? UIImage else{return}
+                DispatchQueue.main.async {
+                    self.imageView.image = image
                 }
                 
             }
@@ -41,7 +41,23 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
     private var configuration = PHPickerConfiguration()
     internal var imagePicker : PHPickerViewController? = nil
     
+    var landsDelegate : LandsDelegate? = nil
+    var landToModify : Landmark? = nil
+    
     override func viewDidLoad() {
+        
+        if let landToModify = landToModify {
+            guard let image = landToModify.image else {return}
+            guard let coordinates = landToModify.coordinates else {return}
+            
+            landmarkTitle.text = landToModify.title
+            desc.text = landToModify.desc
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: image)
+            }
+            map.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude), latitudinalMeters: 10 * 1000, longitudinalMeters: 10 * 1000)
+            category = landToModify.category
+        }
         configuration.filter = .any(of: [.images, .livePhotos])
         configuration.selectionLimit = 1
         imagePicker = PHPickerViewController(configuration: configuration)
@@ -49,13 +65,30 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
         map.delegate = self
         address.text = "\(map.centerCoordinate.latitude) \(map.centerCoordinate.longitude)"
         coordinates = map.centerCoordinate
+        
     }
     
     @IBAction func save() {
+        guard let category = category else { print("No category !"); return}
+        guard let ldTitle = landmarkTitle.text else { print("No title !"); return}
+        guard let ldDesc = desc.text else { print("No description !"); return}
+        guard let image = imageView.image else { print("No image !"); return}
+        guard let coordinates = coordinates else { print("No coordinates !"); return}
+        guard let delegate = landsDelegate else { print("No delegate !"); return}
+        
         if (landmarkTitle.hasText && desc.hasText && imageView.image != nil ){
-            if let category = category, let ldTitle = landmarkTitle.text, let ldDesc = desc.text, let image = imageView.image, let coordinates = coordinates {
+            
+            if let landToModify = landToModify {
+                
+                CoreDataManager.Instance.updateLandmark(landmark: landToModify, title: ldTitle, desc: ldDesc, image: image, coordinates: coordinates)
+                delegate.updateLand(self, landmark: landToModify)
+                
+            }
+            else {
+                
                 CoreDataManager.Instance.createLandmark(title: ldTitle, description: ldDesc, category: category, image: image, coordinates: coordinates)
-                dismiss(animated: true)
+                delegate.addLand(self)
+                
             }
         }
     }
@@ -65,16 +98,11 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
     }
     
     @IBAction func selectImage() {
-        guard let imagePicker = imagePicker else {
-            return
-        }
-        
+        guard let imagePicker = imagePicker else {return}
+            
         present(imagePicker, animated: true)
     }
     
-    func saveCoordinates() {
-        
-    }
 }
 
 extension CreateLandViewController : MKMapViewDelegate {
@@ -83,4 +111,9 @@ extension CreateLandViewController : MKMapViewDelegate {
         coordinates = map.centerCoordinate
     }
     
+}
+
+protocol LandsDelegate {
+    func addLand(_ controller: CreateLandViewController);
+    func updateLand(_ controller: CreateLandViewController, landmark: Landmark);
 }
