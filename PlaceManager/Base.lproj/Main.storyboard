@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -30,18 +31,20 @@
                                             <rect key="frame" x="20" y="7.5" width="30" height="17"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" name="AccentColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="psR-Ro-evV">
                                             <rect key="frame" x="20" y="27" width="33" height="14.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" name="AccentColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" name="BackgroundColor"/>
+                                <color key="tintColor" name="AccentColor"/>
                                 <connections>
                                     <segue destination="H1o-gv-Ihw" kind="show" identifier="ShowLandsSegue" id="cCD-it-zX2"/>
                                 </connections>
@@ -53,7 +56,8 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Categories" id="Qt9-Fr-NU0">
-                        <barButtonItem key="leftBarButtonItem" image="line.3.horizontal.decrease" catalog="system" style="plain" id="Anp-P1-CWm">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="Anp-P1-CWm">
+                            <imageReference key="image" image="line.3.horizontal.decrease" catalog="system" renderingMode="template"/>
                             <button key="customView" opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YtR-wg-cFt">
                                 <rect key="frame" x="20" y="0.0" width="50" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -66,8 +70,10 @@
                                 </menu>
                                 <state key="normal" image="line.3.horizontal.decrease" catalog="system"/>
                             </button>
+                            <color key="tintColor" name="AccentColor"/>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="DXv-Tu-pr5">
+                            <color key="tintColor" name="AccentColor"/>
                             <connections>
                                 <action selector="createCategoryActionButton:" destination="Bzi-ob-PeW" id="Jk7-eD-sHj"/>
                             </connections>
@@ -105,15 +111,15 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hn2-gk-VlL">
-                                            <rect key="frame" x="90" y="3" width="272" height="17"/>
+                                            <rect key="frame" x="90" y="5" width="272" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" name="AccentColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wta-CY-KvK">
-                                            <rect key="frame" x="90" y="25" width="272" height="15"/>
+                                            <rect key="frame" x="90" y="27" width="272" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" name="AccentColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -127,9 +133,11 @@
                                         <constraint firstItem="hn2-gk-VlL" firstAttribute="leading" secondItem="ETI-aP-6gx" secondAttribute="trailing" constant="12" id="NE5-Ew-nbi"/>
                                         <constraint firstItem="ETI-aP-6gx" firstAttribute="leading" secondItem="Ds1-gn-pLO" secondAttribute="leading" constant="12" id="fMu-mO-nxg"/>
                                         <constraint firstItem="ETI-aP-6gx" firstAttribute="centerY" secondItem="Ds1-gn-pLO" secondAttribute="centerY" id="gC9-UM-rxB"/>
-                                        <constraint firstItem="hn2-gk-VlL" firstAttribute="top" secondItem="Ds1-gn-pLO" secondAttribute="top" constant="3" id="yhs-fi-Tf1"/>
+                                        <constraint firstItem="hn2-gk-VlL" firstAttribute="top" secondItem="Ds1-gn-pLO" secondAttribute="top" constant="5" id="yhs-fi-Tf1"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" name="BackgroundColor"/>
+                                <color key="tintColor" name="AccentColor"/>
                                 <connections>
                                     <outlet property="cellDescription" destination="wta-CY-KvK" id="EGG-Dr-7EX"/>
                                     <outlet property="cellTitle" destination="hn2-gk-VlL" id="ilU-8w-8Ad"/>
@@ -146,6 +154,7 @@
                     <navigationItem key="navigationItem" title="Lands" id="4zr-kA-ttO">
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="tp1-n8-Xzb">
+                                <color key="tintColor" name="AccentColor"/>
                                 <connections>
                                     <segue destination="R8q-Tm-uIt" kind="presentation" identifier="createLandmarkSegue" id="uxH-Xq-9EE"/>
                                 </connections>
@@ -164,6 +173,7 @@
                                     <state key="normal" title="Filters" image="line.horizontal.3.decrease" catalog="system"/>
                                     <buttonConfiguration key="configuration" style="plain" image="line.3.horizontal.decrease" catalog="system" title="Filters"/>
                                 </button>
+                                <color key="tintColor" name="AccentColor"/>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
@@ -189,25 +199,25 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dkT-JZ-u9t">
                                         <rect key="frame" x="20" y="407" width="374" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" name="AccentColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IXO-up-Z8H">
                                         <rect key="frame" x="30" y="372" width="364" height="15"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <color key="textColor" name="SecondaryColor"/>
                                         <color key="highlightedColor" systemColor="secondaryLabelColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehj-1j-Jsb">
                                         <rect key="frame" x="30" y="352" width="364" height="15"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <color key="textColor" name="SecondaryColor"/>
                                         <color key="highlightedColor" systemColor="secondaryLabelColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ae3-Iw-hNL">
                                         <rect key="frame" x="20" y="305" width="374" height="37"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" name="AccentColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="JPv-o7-oGV">
@@ -300,17 +310,23 @@
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="justified" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="waY-UN-edd">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="34"/>
+                                                <color key="backgroundColor" name="BackgroundColor"/>
+                                                <color key="tintColor" name="AccentColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="B35-T8-Flj"/>
                                                 </constraints>
+                                                <color key="textColor" name="AccentColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Description" textAlignment="justified" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j0W-84-yQ3">
                                                 <rect key="frame" x="0.0" y="47" width="374" height="34"/>
+                                                <color key="backgroundColor" name="BackgroundColor"/>
+                                                <color key="tintColor" name="AccentColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="QBV-El-lFf"/>
                                                 </constraints>
+                                                <color key="textColor" name="AccentColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
@@ -325,6 +341,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="glM-fO-YU2"/>
                                                 </constraints>
+                                                <color key="tintColor" name="AccentColor"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="Choose an image"/>
                                                 <connections>
                                                     <action selector="selectImage" destination="G7J-nY-mH6" eventType="touchUpInside" id="AYD-f9-8yW"/>
@@ -349,16 +366,16 @@
                                                             <constraint firstAttribute="height" constant="30" id="NBu-Gh-gbx"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qo3-e4-5jF">
-                                                        <rect key="frame" x="10" y="350" width="354" height="26"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qo3-e4-5jF">
+                                                        <rect key="frame" x="10" y="348" width="354" height="28"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                        <color key="textColor" name="SecondaryColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="qo3-e4-5jF" firstAttribute="top" secondItem="Nom-Dn-Ee3" secondAttribute="bottom" constant="2" id="ARp-4m-ev8"/>
+                                                    <constraint firstItem="qo3-e4-5jF" firstAttribute="top" secondItem="Nom-Dn-Ee3" secondAttribute="bottom" id="ARp-4m-ev8"/>
                                                     <constraint firstAttribute="bottom" secondItem="qo3-e4-5jF" secondAttribute="bottom" id="Dho-sO-UkN"/>
                                                     <constraint firstItem="qo3-e4-5jF" firstAttribute="leading" secondItem="eby-Mn-I4l" secondAttribute="leading" constant="10" id="Nuz-Eu-PoT"/>
                                                     <constraint firstItem="Nom-Dn-Ee3" firstAttribute="centerY" secondItem="Wgt-7b-Vex" secondAttribute="bottom" id="OoC-yI-upI"/>
@@ -376,8 +393,11 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="yIA-jO-Q3u"/>
                                                 </constraints>
+                                                <color key="tintColor" name="BackgroundColor"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="Save"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Save">
+                                                    <color key="baseBackgroundColor" name="ButtonBackground"/>
+                                                </buttonConfiguration>
                                                 <connections>
                                                     <action selector="save" destination="G7J-nY-mH6" eventType="touchUpInside" id="xCW-XY-gwE"/>
                                                 </connections>
@@ -409,6 +429,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Create new landmark" id="pP5-51-ivS">
                         <barButtonItem key="leftBarButtonItem" image="xmark" catalog="system" id="hDD-jg-3c6">
+                            <color key="tintColor" name="AccentColor"/>
                             <connections>
                                 <action selector="cancel:" destination="G7J-nY-mH6" id="dFR-bU-dLg"/>
                             </connections>
@@ -434,6 +455,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="xbf-GL-vlg">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" name="AccentColor"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -452,6 +476,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="j3N-pB-rfd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" name="AccentColor"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -471,6 +498,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xas-GD-TSx">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" name="AccentColor"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -483,7 +513,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="uxH-Xq-9EE"/>
+        <segue reference="nSG-Sc-tcC"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron.backward" catalog="system" width="96" height="128"/>
@@ -492,6 +522,18 @@
         <image name="mappin" catalog="system" width="105" height="128"/>
         <image name="pencil" catalog="system" width="128" height="113"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
+        <namedColor name="AccentColor">
+            <color red="0.32549019607843138" green="0.2627450980392157" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
+        <namedColor name="ButtonBackground">
+            <color red="0.32549019607843138" green="0.2627450980392157" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="SecondaryColor">
+            <color red="0.73333333333333328" green="0.59999999999999998" blue="0.50588235294117645" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

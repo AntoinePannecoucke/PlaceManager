@@ -68,7 +68,7 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
         imagePicker = PHPickerViewController(configuration: configuration)
         imagePicker?.delegate = self
         map.delegate = self
-        address.text = "\(map.centerCoordinate.latitude) \(map.centerCoordinate.longitude)"
+        address.text = "latitude: \(map.centerCoordinate.latitude) longitude: \(map.centerCoordinate.longitude)"
         coordinates = map.centerCoordinate
         
     }
@@ -143,7 +143,7 @@ class CreateLandViewController : UIViewController, PHPickerViewControllerDelegat
 
 extension CreateLandViewController : MKMapViewDelegate {
     func mapViewDidChangeVisibleRegion(_ mapView : MKMapView){
-        address.text = "\(mapView.centerCoordinate.latitude) \(mapView.centerCoordinate.longitude)"
+        address.text = "latitude: \(mapView.centerCoordinate.latitude) longitude: \(mapView.centerCoordinate.longitude)"
         coordinates = map.centerCoordinate
     }
     
